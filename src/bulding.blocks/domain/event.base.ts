@@ -1,4 +1,5 @@
 import { Guid } from "guid-typescript";
+import { stringify } from "querystring";
 
 export class DomainEventBase{
     private _id : Guid;
@@ -9,10 +10,10 @@ export class DomainEventBase{
         this._occuredDate = new Date();
     }
 
-    public GetId() : Guid{
+    public getId() : Guid{
         return this._id;
     }
-    public GetDate() : Date{
+    public getDate() : Date{
         return this._occuredDate;
     }
 }

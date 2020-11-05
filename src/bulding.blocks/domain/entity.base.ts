@@ -4,11 +4,11 @@ export class Entity {
     private _domainEvents : DomainEventBase[] = [];
 
 
-    protected AddDomainEvent(event : DomainEventBase)  : void{
+    protected addDomainEvent(event : DomainEventBase)  : void{
         this._domainEvents.push(event);
     }
 
-    public GetEvents() : DomainEventBase[] {
+    public getEvents() : DomainEventBase[] {
         return this._domainEvents;
     }
 }
