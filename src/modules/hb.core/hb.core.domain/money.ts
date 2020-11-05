@@ -7,26 +7,26 @@ export class Money{
         this._currency = currency;
     }
 
-    public static Of(value : number, currency : string) : Money{
+    public static of(value : number, currency : string) : Money{
         return new Money(value, currency);
     }
 
-    public static Default(){
+    public static default(){
         return new Money(0, "");
     }
 
-    public Add(money : Money) : Money{
+    public add(money : Money) : Money{
         if(money._currency === this._currency && this._currency){
             //throw exception
         }
         return new Money(this._value + money._value, money._currency);
     }
 
-    public GetValue() : number{
+    public getValue() : number{
         return this._value;
     }
 
-    public GetCurrency() : string{
+    public getCurrency() : string{
         return this._currency;
     }
 }
