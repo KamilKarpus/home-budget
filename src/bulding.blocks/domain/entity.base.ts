@@ -1,14 +1,13 @@
 import { DomainEventBase } from "./event.base";
+import { AggregateRoot } from '@nestjs/cqrs';
 
-export class Entity {
-    private _domainEvents : DomainEventBase[] = [];
+export class Entity extends AggregateRoot {
 
 
     protected addDomainEvent(event : DomainEventBase)  : void{
-        this._domainEvents.push(event);
+        this.apply(event);
     }
 
-    public getEvents() : DomainEventBase[] {
-        return this._domainEvents;
-    }
+
+
 }
