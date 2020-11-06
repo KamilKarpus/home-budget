@@ -16,7 +16,7 @@ export class Money{
     }
 
     public add(money : Money) : Money{
-        if(money._currency === this._currency && this._currency){
+        if(money._currency === this._currency && !this._currency){
             //throw exception
         }
         return new Money(this._value + money._value, money._currency);

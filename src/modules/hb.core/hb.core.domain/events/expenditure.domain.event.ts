@@ -1,6 +1,7 @@
 import { Guid } from "guid-typescript";
-import { DomainEventBase } from "src/bulding.blocks/domain";
+
 import { Money } from "..";
+import { DomainEventBase } from "src/bulding.blocks/domain";
 
 
 export class ExpenditureAddedDomainEvent extends DomainEventBase{

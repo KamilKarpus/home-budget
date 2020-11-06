@@ -1,15 +1,18 @@
+import { Inject } from "@nestjs/common";
 import { CommandHandler, ICommandHandler } from "@nestjs/cqrs";
 import { Guid } from "guid-typescript";
 import { Budget } from "src/modules/hb.core/hb.core.domain";
-import { BudgetRepository } from "src/modules/hb.core/hb.core.infrastructure/repositories/budget.repository";
+import { IBudgetRepository } from "src/modules/hb.core/hb.core.domain/repositories/budget.repository.interface";
 import { CreateBudgetCommand } from "./create.budget.command";
+
+const BudgetRepository = () => Inject('BudgetRepository');
 
 @CommandHandler(CreateBudgetCommand)
 export class CreateBudgetCommandHandler implements ICommandHandler<CreateBudgetCommand> {
-  constructor(private repository: BudgetRepository) {}
+  constructor(@BudgetRepository() private repository: IBudgetRepository) {}
 
     async execute(command: CreateBudgetCommand): Promise<any> {
-        const budget = new Budget(Guid.create(), command.Name);
+        const budget = Budget.create(Guid.create(), command.Name);
         await this.repository.create(budget);
 
         return budget.getId();

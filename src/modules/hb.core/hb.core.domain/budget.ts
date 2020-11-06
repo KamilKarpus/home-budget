@@ -30,16 +30,23 @@ export class Budget extends Entity{
     public getName() : string{
         return this._name;
     }
-
-    constructor(id : Guid, name : string) {
+    
+    constructor(id : Guid, name : string, totalIncome : Money, totalExpenditure : Money, history : BudgetHistory[]) {
         super();
         this._id = id;
-        this._totalIncome = Money.default();
-        this._totalExpenditure = Money.default();
+        this._totalIncome = totalIncome;
+        this._totalExpenditure = totalExpenditure;
         this._name = name;
-        this.addDomainEvent(new BalanceCreatedDomainEvent(this._id, this._name));
-        this._history = [];
-        this._history.push(BudgetHistory.CreateHistory());
+        this._history = history;
+    }
+
+    public static create(id: Guid, name : string) : Budget{
+
+        const history = [];
+        history.push(BudgetHistory.CreateHistory());
+        const budget = new Budget(id, name, Money.default(), Money.default(),history);
+        budget.addDomainEvent(new BalanceCreatedDomainEvent(id, name));
+        return budget;
     }
 
     public addIncome(amount : number, currency: string, comment : string) : void{
@@ -48,7 +55,7 @@ export class Budget extends Entity{
 
         let event = new IncomeAddedDomainEvent(money, comment,this._id);
         
-        this._totalIncome.add(money);
+        this._totalIncome = this._totalIncome.add(money);
 
         this._history.push(BudgetHistory.IncomeHistory(money, comment));
 
@@ -61,7 +68,7 @@ export class Budget extends Entity{
 
         let event = new ExpenditureAddedDomainEvent(money, currency, this._id);
 
-        this._totalExpenditure.add(money);
+        this._totalIncome = this._totalExpenditure.add(money);
 
         this._history.push(BudgetHistory.ExpenditureHistory(money, comment));
 
