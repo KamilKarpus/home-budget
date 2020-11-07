@@ -43,22 +43,25 @@ export class Budget extends Entity{
     public static create(id: Guid, name : string) : Budget{
 
         const history = [];
-        history.push(BudgetHistory.CreateHistory());
+        const historyToAdd = BudgetHistory.CreateHistory();
+        history.push(historyToAdd);
         const budget = new Budget(id, name, Money.default(), Money.default(),history);
-        budget.addDomainEvent(new BalanceCreatedDomainEvent(id, name));
+        budget.addDomainEvent(new BalanceCreatedDomainEvent(id, name, historyToAdd.getId()));
         return budget;
     }
 
     public addIncome(amount : number, currency: string, comment : string) : void{
 
         let money = new Money(amount, currency);
-
-        let event = new IncomeAddedDomainEvent(money, comment,this._id);
-        
+    
         this._totalIncome = this._totalIncome.add(money);
+        
+        const change = BudgetHistory.IncomeHistory(money, comment); 
 
-        this._history.push(BudgetHistory.IncomeHistory(money, comment));
+        this._history.push(change);
 
+        let event = new IncomeAddedDomainEvent(money, comment,this._id, this._totalIncome, change.getId());
+        
         this.addDomainEvent(event);
     }
 
