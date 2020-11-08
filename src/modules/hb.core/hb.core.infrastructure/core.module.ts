@@ -8,19 +8,21 @@ import { QueryHandlers } from '../hb.core.application/queries/queries.index';
 
 import { DatabaseModule } from './configuration/database.module';
 import { budgetProviders } from './providers/budget.provider';
-import { BudgetRepository } from './repositories/budget.repository';
+import { BudgetRepositoryProvider } from './providers/budget.repository.provider';
+import { ServicesProviders } from './providers/services.provider';
 import { BudgetShortViewService } from './services/budget.short.view.service';
 ;
 
 @Module({
   imports: [DatabaseModule, CqrsModule],
   providers: [
-    BudgetRepository, 
+    BudgetRepositoryProvider, 
     BudgetShortViewService,
     ...budgetProviders,
     ...EventHandlers,
     ...CommandHandlers,
-    ...QueryHandlers
+    ...QueryHandlers,
+    ...ServicesProviders
   ],
   controllers: [BudgetController,BudgetQueryController]
 })
