@@ -19,6 +19,6 @@ export const budgetProviders = [
       provide: 'HISTORY_VIEW',
       useFactory: (connection: Connection) => connection.model('HistoryShortView', HistoryViewSchema),
       inject: ['DATABASE_CONNECTION'],
-    }
+    },
   ];
   

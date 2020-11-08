@@ -22,6 +22,14 @@ export class Money{
         return new Money(this._value + money._value, money._currency);
     }
 
+    public sub(money : Money) : Money{
+        if(money._currency === this._currency && !this._currency){
+            //throw exception
+        }
+        return new Money(this._value - money._value, money._currency);
+    }
+
+
     public getValue() : number{
         return this._value;
     }

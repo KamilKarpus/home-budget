@@ -16,6 +16,7 @@ export class IncomeAddedDomainEventHandler implements IEventHandler<IncomeAddedD
         if(view){
             view.TotalIncome = event.getTotalIncome().getValue();
             view.Currency = event.getTotalIncome().getCurrency();
+            view.Total = event.getTotal().getValue();
             await this.service.update(view);
         }
 

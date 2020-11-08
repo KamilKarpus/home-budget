@@ -21,7 +21,7 @@ export class HistoryService implements IHistoryService{
         await this.viewModel.updateOne({_id: history._id}, history);
     }
 
-    async loadById(id: Guid){
+    async loadById(id: Guid) : Promise<HistoryView>{
         return await this.viewModel.findById(id.toString());
     }
 }

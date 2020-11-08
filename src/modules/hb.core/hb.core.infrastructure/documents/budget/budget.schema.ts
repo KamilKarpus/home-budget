@@ -19,5 +19,6 @@ export const BudgetSchema = new mongoose.Schema({
     _totalExpenditure : MoneySchema,
     _totalIncome : MoneySchema,
     _history: [HistorySchema],
-    _name: String
+    _name: String,
+    _total: MoneySchema
 })

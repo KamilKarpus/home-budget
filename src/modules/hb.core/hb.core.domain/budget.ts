@@ -11,6 +11,7 @@ export class Budget extends Entity{
     private _totalIncome : Money;
     private _totalExpenditure : Money;
     private _name : string;
+    private _total : Money;
 
     public getId() : Guid{
         return this._id;
@@ -31,13 +32,14 @@ export class Budget extends Entity{
         return this._name;
     }
     
-    constructor(id : Guid, name : string, totalIncome : Money, totalExpenditure : Money, history : BudgetHistory[]) {
+    constructor(id : Guid, name : string, totalIncome : Money, totalExpenditure : Money, total : Money, history : BudgetHistory[]) {
         super();
         this._id = id;
         this._totalIncome = totalIncome;
         this._totalExpenditure = totalExpenditure;
         this._name = name;
         this._history = history;
+        this._total = total;
     }
 
     public static create(id: Guid, name : string) : Budget{
@@ -45,7 +47,7 @@ export class Budget extends Entity{
         const history = [];
         const historyToAdd = BudgetHistory.CreateHistory();
         history.push(historyToAdd);
-        const budget = new Budget(id, name, Money.default(), Money.default(),history);
+        const budget = new Budget(id, name, Money.default(), Money.default(), Money.default(),history);
         budget.addDomainEvent(new BalanceCreatedDomainEvent(id, name, historyToAdd.getId()));
         return budget;
     }
@@ -60,7 +62,10 @@ export class Budget extends Entity{
 
         this._history.push(change);
 
-        let event = new IncomeAddedDomainEvent(money, comment,this._id, this._totalIncome, change.getId());
+        this._total = this._total.add(money);
+
+        let event = new IncomeAddedDomainEvent(money, comment,this._id, this._totalIncome, change.getId(), 
+            this._total);
         
         this.addDomainEvent(event);
     }
@@ -69,11 +74,16 @@ export class Budget extends Entity{
 
         let money = new Money(amount, currency);
 
-        let event = new ExpenditureAddedDomainEvent(money, currency, this._id);
+        this._totalExpenditure = this._totalExpenditure.add(money);
+        
+        const change = BudgetHistory.ExpenditureHistory(money, comment);
 
-        this._totalIncome = this._totalExpenditure.add(money);
+        this._history.push(change);
 
-        this._history.push(BudgetHistory.ExpenditureHistory(money, comment));
+        this._total = this._total.sub(money);
+
+        let event = new ExpenditureAddedDomainEvent(money, currency, this._id,this._totalExpenditure, 
+            this._total, change.getId());
 
         this.addDomainEvent(event);
     }

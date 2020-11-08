@@ -13,7 +13,7 @@ export class BudgetCreatedDomainEventHandler implements IEventHandler<BalanceCre
     constructor(@ShortViewService() private readonly service : IBudgetShortViewService){}
 
     async handle(event: BalanceCreatedDomainEvent) {
-        const view = new BudgetShortView(event.getBalanceId(), 0,0,"", event.getBalanceName());
+        const view = new BudgetShortView(event.getBalanceId(), 0,0,"", event.getBalanceName(),0);
         await this.service.commitView(view);
     }
 

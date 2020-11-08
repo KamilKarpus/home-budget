@@ -11,15 +11,17 @@ export class IncomeAddedDomainEvent extends DomainEventBase{
     private _reason: string;
     private _totalIncome : Money;
     private _historyId : Guid;
+    private _total: Money;
 
     constructor(moneyChange : Money, reason : string, budgetId : Guid,
-        _totalIncome : Money, historyId: Guid){
+        _totalIncome : Money, historyId: Guid, total:Money){
         super();
         this._change = moneyChange;
         this._reason = reason;
         this._budgetId = budgetId;
         this._totalIncome = _totalIncome;
         this._historyId = historyId;
+        this._total = total;
     }
 
     public getBudgetId() : Guid{
@@ -40,5 +42,9 @@ export class IncomeAddedDomainEvent extends DomainEventBase{
 
     public getHistoryId() : Guid{
         return this._historyId;
+    }
+
+    public getTotal() : Money{
+        return this._total;
     }
 }
