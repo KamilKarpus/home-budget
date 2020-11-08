@@ -2,9 +2,13 @@ import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder } from '@nestjs/swagger/dist/document-builder';
 import { SwaggerModule } from '@nestjs/swagger/dist/swagger-module';
 import { AppModule } from './app.module';
+import { HttpExceptionFilter } from './bulding.blocks/infrastructure/exception.filter';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+
+  app.useGlobalFilters(new HttpExceptionFilter());
+
   const options = new DocumentBuilder()
     .setTitle('Home Budget')
     .setDescription('The Home Budget API description')
