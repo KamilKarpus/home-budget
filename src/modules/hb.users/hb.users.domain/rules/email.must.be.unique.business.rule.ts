@@ -1,8 +1,8 @@
-import { BusinessRule } from "src/bulding.blocks/domain/business.rule.base";
+import { BusinessRuleAsync } from "src/bulding.blocks/domain/business.rule.async.base";
 import { EmailMustBeUniqueException } from "../exceptions/email.must.be.unqiue.exception";
 import { IUserEmailUniqueness } from "../user.email.uniqueness.inferface";
 
-export class EmailMustBeUniqueBussinessRule extends BusinessRule{
+export class EmailMustBeUniqueBussinessRule extends BusinessRuleAsync{
 
     private readonly _userEmailUniquness : IUserEmailUniqueness
     private readonly _userEmail : string;
@@ -14,8 +14,8 @@ export class EmailMustBeUniqueBussinessRule extends BusinessRule{
     }
 
     
-    public isBroken(): boolean {
-        return !this._userEmailUniquness.isEmailUnique(this._userEmail);
+    public async isBroken(): Promise<boolean> {
+        return !await this._userEmailUniquness.isEmailUnique(this._userEmail);
     }
 
 }

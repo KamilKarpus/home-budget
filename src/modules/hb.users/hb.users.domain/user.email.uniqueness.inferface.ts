@@ -1,3 +1,3 @@
 export interface IUserEmailUniqueness{
-    isEmailUnique(email: string) : boolean;
+    isEmailUnique(email: string) : Promise<boolean>;
 }

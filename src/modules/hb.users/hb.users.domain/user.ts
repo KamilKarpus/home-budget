@@ -1,7 +1,5 @@
 import { Guid } from "guid-typescript";
 import { Entity } from "src/bulding.blocks/domain";
-import { EmailMustBeUniqueBussinessRule } from "./rules/email.must.be.unique.business.rule";
-import { IUserEmailUniqueness } from "./user.email.uniqueness.inferface";
 
 export class User extends Entity{
     private _id: Guid;
@@ -22,11 +20,8 @@ export class User extends Entity{
             this._registerDate = registerDate;
         }
 
-    public static register(email: string, password: string, firstName : string, lastName: string,
-        userEmailUniqueness : IUserEmailUniqueness) : User{
+    public static register(email: string, password: string, firstName : string, lastName: string) : User{
         const user = new User(Guid.create(), email, password, new Date(), firstName, lastName);
-        user.checkRule(new EmailMustBeUniqueBussinessRule(userEmailUniqueness,  user.getEmail()));
-
         return user;
     }
 

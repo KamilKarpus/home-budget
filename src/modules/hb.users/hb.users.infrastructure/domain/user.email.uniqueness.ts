@@ -7,9 +7,9 @@ export class UserEmailUniqueness implements IUserEmailUniqueness{
 
     constructor(@Inject('USERS_MODEL') private userModel : Model<User>){}
 
-     isEmailUnique(email: string): boolean {
-        const result = this.userModel.findOne({email: email}).exec();
-        return !result;
+     async isEmailUnique(email: string): Promise<boolean> {
+            const result = await this.userModel.findOne({_email: email});
+            return !result;
     }
 
 }

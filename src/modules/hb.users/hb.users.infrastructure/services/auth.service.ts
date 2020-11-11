@@ -1,0 +1,39 @@
+import { Inject } from "@nestjs/common";
+import { JwtService } from "@nestjs/jwt";
+import { Guid } from "guid-typescript";
+import { IAuthService } from "../../hb.users.application/contracts/auth.service.interface";
+import { IPasswordService } from "../../hb.users.application/contracts/password.service.interface";
+import { AuthResponse } from "../../hb.users.application/dtos/auth.response";
+import { TokenDto } from "../../hb.users.application/dtos/token.dto";
+import { UserDto } from "../../hb.users.application/dtos/user.dto";
+import { IUserRepository } from "../../hb.users.domain/user.repository.interface";
+
+const UserRepository = () => Inject("UserRepository");
+const PasswordService = () => Inject("PasswordService");
+export class AuthService implements IAuthService{
+
+    constructor(@UserRepository() private readonly userRepository : IUserRepository,
+                private readonly jwtService : JwtService,
+                @PasswordService() private readonly passwordService : IPasswordService){}
+
+    public async validateUser(userName : string, password : string) : Promise<AuthResponse>{
+        const user = await this.userRepository.getByEmail(userName);
+        if(user && user.getId()){
+            if(this.passwordService.verifyPassword(user.getPassword(), password)){
+                return new AuthResponse(new UserDto(user.getId(), user.getEmail(), user.getFirstName(), 
+                user.getLastName()));
+            }
+        }
+        return new AuthResponse(null);
+    }
+
+    public generateCredential(user : UserDto) : TokenDto{
+        const payload = {
+            login: user.Email, sub: user.Id
+        }
+
+        return {
+            access_token : this.jwtService.sign(payload)
+        }
+    }
+}
