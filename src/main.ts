@@ -14,6 +14,7 @@ async function bootstrap() {
     .setDescription('The Home Budget API description')
     .setVersion('1.0')
     .addTag('Home Budget')
+    .addBearerAuth()
     .build();
     const document = SwaggerModule.createDocument(app, options);
     SwaggerModule.setup('swagger', app, document);

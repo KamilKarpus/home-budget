@@ -1,4 +1,4 @@
-import { Body, Controller, Param, Post, Put } from "@nestjs/common";
+import { Body, Controller, Param, Post, Put, UseGuards } from "@nestjs/common";
 import { CommandBus } from "@nestjs/cqrs";
 import { Guid } from "guid-typescript";
 import { AddIncomeCommand } from "../../hb.core.application/commands/add.income.command/add.income.command";
@@ -8,9 +8,12 @@ import { AddIncomeDto } from "../dtos/budget.income.dtos";
 import { AddExpenditureCommand } from "../../hb.core.application/commands/add.expenditure.command/add.expenditure.command";
 import { ExpenditureDto } from "../dtos/budget.expenditure.dto";
 import { Created } from "src/common/responses/created";
+import { JwtAuthGuard } from "src/common/authGuard/auth.guard";
+import { ApiBearerAuth } from "@nestjs/swagger";
 
 
-
+@UseGuards(JwtAuthGuard)
+@ApiBearerAuth()
 @Controller('budgets')
 export class BudgetController{
     constructor(private commandBus: CommandBus){
