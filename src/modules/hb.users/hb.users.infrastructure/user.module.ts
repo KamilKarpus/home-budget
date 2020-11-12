@@ -6,10 +6,19 @@ import { DatabaseModule } from './configuration/database.module';
 import { RepositoryProviders } from './providers/repository.provider';
 import { ServicesProviders } from './providers/service.provider';
 import { usersProviders } from './providers/user.provider';
+import { JwtModule } from '@nestjs/jwt';
+import { Environment } from 'src/environment';
 
 
 @Module({
-  imports: [DatabaseModule, CqrsModule],
+  imports: [
+    DatabaseModule, 
+    CqrsModule,
+    JwtModule.register({
+      secret: Environment.secret,
+      signOptions: { expiresIn: '60s' },
+    })
+  ],
   providers: [
       ...usersProviders,
       ...ServicesProviders,

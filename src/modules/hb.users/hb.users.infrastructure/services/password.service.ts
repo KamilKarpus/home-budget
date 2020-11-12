@@ -13,7 +13,7 @@ export class PasswordService implements IPasswordService{
     
     verifyPassword(hashedPassword: string, password: string): boolean {
         const bcrypt = require('bcrypt');
-        return bcrypt.compare(password, hashedPassword);
+        return bcrypt.compareSync(password, hashedPassword);
     }
 
 }

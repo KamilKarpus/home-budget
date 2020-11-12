@@ -12,15 +12,15 @@ export class UserRepository implements IUserRepository{
         const newUser = new this.userModel(user);
         return newUser.save();
     }
-    loadById(id: Guid) {
+    async loadById(id: Guid) : Promise<User> {
         const user = this.userModel.findById(id.toString()).lean();
-        return new User(user._id, user._email, user._password, user._registerDate,
-            user._firstName, user._lastName);
+        return new User(user?._id, user?._email, user?._password, user?._registerDate,
+            user?._firstName, user?._lastName);
     }
-    getByEmail(email: string) : User {
-        const user = this.userModel.findOne({_email: email});
-        return new User(user._id, user._email, user._password, user._registerDate,
-            user._firstName, user._lastName);
+    async getByEmail(email: string) : Promise<User> {
+        const user = await this.userModel.findOne({_email: email});
+        return new User(user?._id, user?._email, user?._password, user?._registerDate,
+            user?._firstName, user?._lastName);
     }
 
 }
