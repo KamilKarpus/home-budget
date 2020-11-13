@@ -9,6 +9,6 @@ export class BudgetMapper{
 
     public toEntity(budget){
         return new Budget(budget._id, budget._name, this.toMoney(budget._totalIncome),
-        this.toMoney(budget._totalExpenditure),this.toMoney(budget._total),budget._history);
+        this.toMoney(budget._totalExpenditure),this.toMoney(budget._total),budget._history, budget._userId);
     }
 }

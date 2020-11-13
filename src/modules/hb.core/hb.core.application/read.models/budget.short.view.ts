@@ -7,6 +7,7 @@ export class BudgetShortView{
     public TotalExpenditure : number,
     public Currency: string,
     public Name : string,
-    public Total: Number
+    public Total: Number,
+    public UserId : Guid
     ) {}
 }

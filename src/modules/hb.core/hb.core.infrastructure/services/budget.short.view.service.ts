@@ -24,4 +24,8 @@ export class BudgetShortViewService implements IBudgetShortViewService{
     async update(budget : BudgetShortView){
         await this.budgetModel.updateOne({_id: budget._id}, budget);
     }
+
+    async getManyByUserId(userId : Guid) : Promise<BudgetShortView[]>{
+        return await this.budgetModel.find({ UserId :userId.toString()});
+    }
 }

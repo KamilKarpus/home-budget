@@ -12,6 +12,8 @@ export class Budget extends Entity{
     private _totalExpenditure : Money;
     private _name : string;
     private _total : Money;
+    private _userId : Guid;
+
 
     public getId() : Guid{
         return this._id;
@@ -32,7 +34,11 @@ export class Budget extends Entity{
         return this._name;
     }
     
-    constructor(id : Guid, name : string, totalIncome : Money, totalExpenditure : Money, total : Money, history : BudgetHistory[]) {
+    public getUserId() : Guid{
+        return this._userId;
+    }
+    constructor(id : Guid, name : string, totalIncome : Money, totalExpenditure : Money, total : Money, history : BudgetHistory[],
+        userId : Guid) {
         super();
         this._id = id;
         this._totalIncome = totalIncome;
@@ -40,15 +46,17 @@ export class Budget extends Entity{
         this._name = name;
         this._history = history;
         this._total = total;
+        this._userId = userId;
     }
 
-    public static create(id: Guid, name : string) : Budget{
+    public static create(id: Guid, name : string, userId : Guid) : Budget{
 
         const history = [];
         const historyToAdd = BudgetHistory.CreateHistory();
         history.push(historyToAdd);
-        const budget = new Budget(id, name, Money.default(), Money.default(), Money.default(),history);
-        budget.addDomainEvent(new BalanceCreatedDomainEvent(id, name, historyToAdd.getId()));
+        const budget = new Budget(id, name, Money.default(), Money.default(), Money.default(),history, 
+        userId);
+        budget.addDomainEvent(new BalanceCreatedDomainEvent(id, name, historyToAdd.getId(), userId));
         return budget;
     }
 

@@ -1,4 +1,4 @@
-import { Body, Controller, Param, Post, Put, UseGuards } from "@nestjs/common";
+import { Body, Controller, Param, Post, Put, Req, UseGuards } from "@nestjs/common";
 import { CommandBus } from "@nestjs/cqrs";
 import { Guid } from "guid-typescript";
 import { AddIncomeCommand } from "../../hb.core.application/commands/add.income.command/add.income.command";
@@ -10,6 +10,7 @@ import { ExpenditureDto } from "../dtos/budget.expenditure.dto";
 import { Created } from "src/common/responses/created";
 import { JwtAuthGuard } from "src/common/authGuard/auth.guard";
 import { ApiBearerAuth } from "@nestjs/swagger";
+import { HbRequest } from "src/common/authGuard/user.request";
 
 
 @UseGuards(JwtAuthGuard)
@@ -21,8 +22,10 @@ export class BudgetController{
     }
 
     @Post()
-    async create(@Body() addBudgetDto : AddBudgetDto){
-        const id = await this.commandBus.execute(new CreateBudgetCommand(addBudgetDto.name));
+    async create(@Body() addBudgetDto : AddBudgetDto, @Req() request : HbRequest){
+        
+        const id = await this.commandBus.execute(new CreateBudgetCommand(addBudgetDto.name,
+            request.user.userId));
         return new Created(id.value); 
     }
 

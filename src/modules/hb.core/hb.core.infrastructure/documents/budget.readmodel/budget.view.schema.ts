@@ -6,5 +6,6 @@ export const BudgetShortViewSchema = new mongoose.Schema({
         TotalIncome : Number,
         Currency: String,
         Name: String,
-        Total: Number
+        Total: Number,
+        UserId : String
     }, {versionKey: false});
