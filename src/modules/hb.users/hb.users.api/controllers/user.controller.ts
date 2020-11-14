@@ -19,7 +19,7 @@ export class UserController{
             return new Created(id.value); 
     }
 
-    @Post("connect/login")
+    @Post("connect/token")
     async login(@Body() loginDto : LoginDto){
         const token = await this.commandBus.execute(new AuthCommand(loginDto.email, loginDto.password));
         return token;

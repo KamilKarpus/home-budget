@@ -17,7 +17,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
     
     const code = 
       exception instanceof HcException
-      ? exception.getErrorNumber
+      ? exception.getErrorNumber()
       : status;
 
   
