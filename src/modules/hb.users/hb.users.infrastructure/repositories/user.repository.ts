@@ -13,7 +13,7 @@ export class UserRepository implements IUserRepository{
         return newUser.save();
     }
     async loadById(id: Guid) : Promise<User> {
-        const user = this.userModel.findById(id.toString()).lean();
+        const user = await this.userModel.findById(id.toString());
         return new User(user?._id, user?._email, user?._password, user?._registerDate,
             user?._firstName, user?._lastName);
     }

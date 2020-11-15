@@ -8,6 +8,7 @@ import { ServicesProviders } from './providers/service.provider';
 import { usersProviders } from './providers/user.provider';
 import { JwtModule } from '@nestjs/jwt';
 import { Environment } from 'src/environment';
+import { GrantStore } from './services/grant.store.service';
 
 
 @Module({
@@ -23,7 +24,8 @@ import { Environment } from 'src/environment';
       ...usersProviders,
       ...ServicesProviders,
       ...CommandHandlers,
-      ...RepositoryProviders
+      ...RepositoryProviders,
+      GrantStore
     ],
   controllers: [UserController]
 })
