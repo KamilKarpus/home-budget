@@ -21,5 +21,6 @@ export const BudgetSchema = new mongoose.Schema({
     _history: [HistorySchema],
     _name: String,
     _total: MoneySchema,
-    _userId : String
+    _userId : String,
+    _currency : String
 })

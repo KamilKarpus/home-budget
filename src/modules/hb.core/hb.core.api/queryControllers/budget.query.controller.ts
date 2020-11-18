@@ -1,4 +1,4 @@
-import { Controller, Get, Param, Req, UseGuards } from "@nestjs/common";
+import { Controller, Get, Param, Query, Req, UseGuards } from "@nestjs/common";
 import { QueryBus } from "@nestjs/cqrs";
 import { ApiBearerAuth } from "@nestjs/swagger";
 import { Guid } from "guid-typescript";
@@ -9,6 +9,7 @@ import { GetByIdBudgetViewQuery } from "../../hb.core.application/queries/getByI
 import { GetHistoryByIdQuery } from "../../hb.core.application/queries/getHistoryByIdView/get.history.by.id.query";
 import { BudgetShortView } from "../../hb.core.application/read.models/budget.short.view";
 import { HistoryView } from "../../hb.core.application/read.models/history.view";
+import { BudgetQuery } from "../dtos/budget.query";
 
 
 @UseGuards(JwtAuthGuard)
@@ -21,8 +22,9 @@ export class BudgetQueryController{
 
 
       @Get()
-      async find(@Req() request : HbRequest){
-          const result = await this.queryBus.execute(new GetBudgetsByUserIdQuery(Guid.parse(request.user.userId)));
+      async find(@Req() request : HbRequest,@Query()query : BudgetQuery ){
+          const result = await this.queryBus.execute(new GetBudgetsByUserIdQuery(Guid.parse(request.user.userId),
+            Number.parseInt(query.pageSize.toString()), Number.parseInt(query.pageNumber.toString())));
           return result;
       }
 

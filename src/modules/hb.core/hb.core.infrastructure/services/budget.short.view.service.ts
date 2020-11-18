@@ -25,7 +25,11 @@ export class BudgetShortViewService implements IBudgetShortViewService{
         await this.budgetModel.updateOne({_id: budget._id}, budget);
     }
 
-    async getManyByUserId(userId : Guid) : Promise<BudgetShortView[]>{
-        return await this.budgetModel.find({ UserId :userId.toString()});
+    async getManyByUserId(userId : Guid, pageSize : number, page: number) : Promise<BudgetShortView[]>{
+        return await this.budgetModel.find({ UserId :userId.toString()}).limit(pageSize).skip(pageSize * (page-1));
+    }
+
+    async getCount(userId: Guid) : Promise<number>{
+        return await this.budgetModel.find({ UserId :userId.toString()}).countDocuments();
     }
 }

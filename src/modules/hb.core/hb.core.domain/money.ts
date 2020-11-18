@@ -15,6 +15,10 @@ export class Money{
         return new Money(0, "");
     }
 
+    public static empty(currency : string){
+        return new Money(0, currency);
+    }
+
     public add(money : Money) : Money{
         if(money._currency === this._currency && !this._currency){
             //throw exception

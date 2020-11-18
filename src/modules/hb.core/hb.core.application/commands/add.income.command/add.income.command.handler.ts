@@ -11,7 +11,7 @@ export class AddIncomeCommandHandler implements ICommandHandler<AddIncomeCommand
 
     async execute(command: AddIncomeCommand): Promise<any> {
        const budget = await this.repository.findById(command.Id);
-       budget.addIncome(command.Income, command.Currency,
+       budget.addIncome(command.Income,
             command.Reason);
         await this.repository.update(budget);
     }

@@ -25,20 +25,20 @@ export class BudgetController{
     async create(@Body() addBudgetDto : AddBudgetDto, @Req() request : HbRequest){
         
         const id = await this.commandBus.execute(new CreateBudgetCommand(addBudgetDto.name,
-            request.user.userId));
+            request.user.userId, addBudgetDto.currency));
         return new Created(id.value); 
     }
 
     @Put(":id/income")
     async updateIncome(@Param('id') id: string, @Body() incomeAdded : AddIncomeDto){
-        await this.commandBus.execute(new AddIncomeCommand(Guid.parse(id), incomeAdded.Income, incomeAdded.Currency, 
+        await this.commandBus.execute(new AddIncomeCommand(Guid.parse(id), incomeAdded.Income, 
             incomeAdded.Reason));
     }
 
     @Put(":id/expenditure")
     async updateExpenditure(@Param('id') id: string, @Body() expenditure : ExpenditureDto){
         await this.commandBus.execute(new AddExpenditureCommand(Guid.parse(id),
-            expenditure.Expenditure, expenditure.Currency, expenditure.Reason));
+            expenditure.Expenditure, expenditure.Reason));
     }
 
 }

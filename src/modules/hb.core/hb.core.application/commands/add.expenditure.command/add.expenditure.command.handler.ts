@@ -12,7 +12,7 @@ export class AddExpenditureCommandHandler implements ICommandHandler<AddExpendit
 
     async execute(command: AddExpenditureCommand): Promise<any> {
        const budget = await this.repository.findById(command.Id);
-       budget.addExpenditure(command.Expenditure, command.Currency,
+       budget.addExpenditure(command.Expenditure,
             command.Reason);
         await this.repository.update(budget);
     }

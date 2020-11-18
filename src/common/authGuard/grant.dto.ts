@@ -28,7 +28,6 @@ export class GrantDto{
     }
 
     public isConsumed() : boolean{
-        console.log(this.ConsumedTime);
         return this.ConsumedTime !== undefined;
     }
 }

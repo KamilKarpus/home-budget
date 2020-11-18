@@ -8,14 +8,16 @@ export class BalanceCreatedDomainEvent extends DomainEventBase{
     private _balanceName : string;
     private _historyId : Guid;
     private _userId : Guid;
+    private _currency : string;
 
     constructor(balanceId : Guid, balanceName : string, historyId: Guid,
-        userId : Guid){
+        userId : Guid, currency : string){
         super();
         this._balanceId = balanceId;
         this._balanceName = balanceName;
         this._historyId = historyId;
         this._userId = userId;
+        this._currency = currency;
     }
 
     public getBalanceId() : Guid{
@@ -31,5 +33,9 @@ export class BalanceCreatedDomainEvent extends DomainEventBase{
 
     public getUserId() : Guid{
         return this._userId;
+    }
+
+    public getCurrency() : string{
+        return this._currency;
     }
 }

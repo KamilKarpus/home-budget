@@ -1,9 +1,8 @@
 import { ApiProperty } from "@nestjs/swagger";
 
-export class ExpenditureDto{
+export class BudgetQuery{
     @ApiProperty()
-    Expenditure : number;
+    pageNumber : number;
     @ApiProperty()
-    Reason: string;
-
+    pageSize : number;
 }

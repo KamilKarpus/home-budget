@@ -13,7 +13,7 @@ export class Budget extends Entity{
     private _name : string;
     private _total : Money;
     private _userId : Guid;
-
+    private _currency : string;
 
     public getId() : Guid{
         return this._id;
@@ -37,8 +37,12 @@ export class Budget extends Entity{
     public getUserId() : Guid{
         return this._userId;
     }
+
+    public getCurrency() : string{
+        return this._currency;
+    }
     constructor(id : Guid, name : string, totalIncome : Money, totalExpenditure : Money, total : Money, history : BudgetHistory[],
-        userId : Guid) {
+        userId : Guid, currency : string) {
         super();
         this._id = id;
         this._totalIncome = totalIncome;
@@ -47,22 +51,23 @@ export class Budget extends Entity{
         this._history = history;
         this._total = total;
         this._userId = userId;
+        this._currency = currency;
     }
 
-    public static create(id: Guid, name : string, userId : Guid) : Budget{
+    public static create(id: Guid, name : string, userId : Guid, currency: string) : Budget{
 
         const history = [];
         const historyToAdd = BudgetHistory.CreateHistory();
         history.push(historyToAdd);
-        const budget = new Budget(id, name, Money.default(), Money.default(), Money.default(),history, 
-        userId);
-        budget.addDomainEvent(new BalanceCreatedDomainEvent(id, name, historyToAdd.getId(), userId));
+        const budget = new Budget(id, name, Money.default(), Money.empty(currency), Money.empty(currency),history, 
+        userId, currency);
+        budget.addDomainEvent(new BalanceCreatedDomainEvent(id, name, historyToAdd.getId(), userId, currency));
         return budget;
     }
 
-    public addIncome(amount : number, currency: string, comment : string) : void{
+    public addIncome(amount : number, comment : string) : void{
 
-        let money = new Money(amount, currency);
+        let money = new Money(amount, this._currency);
     
         this._totalIncome = this._totalIncome.add(money);
         
@@ -78,9 +83,9 @@ export class Budget extends Entity{
         this.addDomainEvent(event);
     }
 
-    public addExpenditure(amount : number, currency: string, comment : string) : void{
+    public addExpenditure(amount : number, comment : string) : void{
 
-        let money = new Money(amount, currency);
+        let money = new Money(amount, this._currency);
 
         this._totalExpenditure = this._totalExpenditure.add(money);
         
@@ -90,7 +95,7 @@ export class Budget extends Entity{
 
         this._total = this._total.sub(money);
 
-        let event = new ExpenditureAddedDomainEvent(money, currency, this._id,this._totalExpenditure, 
+        let event = new ExpenditureAddedDomainEvent(money, comment, this._id,this._totalExpenditure, 
             this._total, change.getId());
 
         this.addDomainEvent(event);

@@ -12,7 +12,8 @@ export class CreateBudgetCommandHandler implements ICommandHandler<CreateBudgetC
   constructor(@BudgetRepository() private repository: IBudgetRepository) {}
 
     async execute(command: CreateBudgetCommand): Promise<any> {
-        const budget = Budget.create(Guid.create(), command.Name, Guid.parse(command.OwnerId));
+        const budget = Budget.create(Guid.create(), command.Name, Guid.parse(command.OwnerId),
+        command.Currency);
         await this.repository.create(budget);
 
         return budget.getId();
