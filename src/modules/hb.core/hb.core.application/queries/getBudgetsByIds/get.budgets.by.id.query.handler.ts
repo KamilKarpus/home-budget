@@ -14,6 +14,6 @@ export class GetByBudgesByUserIdQueryHandler implements IQueryHandler<GetBudgets
   async execute(query: GetBudgetsByUserIdQuery) {
     const itemsCount = await this.service.getCount(query.UserId);
     const result = await this.service.getManyByUserId(query.UserId, query.pageSize, query.pageNumber);
-    return new Pagination<BudgetShortView>(result, itemsCount, query.pageNumber, query.pageSize);
+    return new Pagination<BudgetShortView>(result, itemsCount, query.pageNumber, query.pageSize, 5);
   }
 }
