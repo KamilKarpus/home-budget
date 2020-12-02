@@ -15,11 +15,10 @@ export class HistoryExpenditureAddedDomainEventHandler implements IEventHandler<
     constructor(@HistoryService() private service : IHistoryService){}
 
     async handle(event: ExpenditureAddedDomainEvent) {
-       const history = await this.service.loadById(event.getBudgetId());
-       history.History.push(new BudgetHistoryView(event.getChangeId(),new MoneyView(event.getChange().getValue(), event.getChange().getCurrency()),
-       ChangeType.Expenditure.getId(), event.getReason(), event.getDate()));
+       const history = new BudgetHistoryView(event.getChangeId(),new MoneyView(event.getChange().getValue(), event.getChange().getCurrency()),
+       ChangeType.Expenditure.getId(), event.getReason(), event.getBudgetId(), event.getDate());
 
-       await this.service.update(history);
+       await this.service.add(history);
     }
 
 }

@@ -3,25 +3,26 @@ import { IHistoryService } from "../../hb.core.application/contracts/history.ser
 import { HistoryView } from "../../hb.core.application/read.models/history.view";
 import { Model } from 'mongoose';
 import { Guid } from "guid-typescript";
+import { BudgetHistoryView } from "../../hb.core.application/read.models/budget.history.view";
 
 export class HistoryService implements IHistoryService{
     
     constructor(@Inject('HISTORY_VIEW')
-    private viewModel : Model<HistoryView>
+    private viewModel : Model<BudgetHistoryView>
     ){
 
     }
 
-    addHistory(history: HistoryView): Promise<void> {
+    add(history: BudgetHistoryView): Promise<void> {
         const documnet = new this.viewModel(history);
         return documnet.save();
     }
 
-    async update(history : HistoryView){
+    async update(history : BudgetHistoryView){
         await this.viewModel.updateOne({_id: history._id}, history);
     }
 
-    async loadById(id: Guid) : Promise<HistoryView>{
-        return await this.viewModel.findById(id.toString());
+    async findManyByBalanceId(balanceId: Guid) : Promise<BudgetHistoryView[]>{
+        return await this.viewModel.find({BudgetId : balanceId.toString()});
     }
 }

@@ -10,7 +10,8 @@ export const HistoryBudgetSchema = new mongoose.Schema({
     Change: MoneyView,
     Type : Number,
     Reason: String,
-    OccuredOn :Date
+    OccuredOn :Date,
+    BudgetId : String,
 }, {versionKey: false});
 
 

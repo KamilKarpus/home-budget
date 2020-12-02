@@ -10,6 +10,6 @@ export class GetHistoryByIdQueryHandler implements IQueryHandler<GetHistoryByIdQ
   constructor(@HistoryService() private readonly service: IHistoryService ) {}
 
   async execute(query: GetHistoryByIdQuery) {
-    return this.service.loadById(query.Id);
+    return this.service.findManyByBalanceId(query.Id);
   }
 }

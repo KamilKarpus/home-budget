@@ -1,6 +1,6 @@
 import { Connection } from 'mongoose';
 import { BudgetShortViewSchema } from '../documents/budget.readmodel/budget.view.schema';
-import { HistoryViewSchema } from '../documents/budget.readmodel/history.view.schema';
+import { HistoryBudgetSchema } from '../documents/budget.readmodel/history.view.schema';
 import { BudgetSchema } from '../documents/budget/budget.schema';
 
 export const budgetProviders = [
@@ -17,7 +17,7 @@ export const budgetProviders = [
     },
     {
       provide: 'HISTORY_VIEW',
-      useFactory: (connection: Connection) => connection.model('HistoryShortView', HistoryViewSchema),
+      useFactory: (connection: Connection) => connection.model('HistoryShortView', HistoryBudgetSchema),
       inject: ['DATABASE_CONNECTION'],
     },
   ];

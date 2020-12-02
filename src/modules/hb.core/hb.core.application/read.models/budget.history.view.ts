@@ -7,6 +7,7 @@ export class BudgetHistoryView{
     public Change: MoneyView,
     public Type : number,
     public Reason: string,
+    public BudgetId: Guid, 
     public OccuredOn :Date){
         
     }
