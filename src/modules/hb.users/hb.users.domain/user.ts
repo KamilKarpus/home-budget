@@ -2,7 +2,7 @@ import { Guid } from "guid-typescript";
 import { Entity } from "src/bulding.blocks/domain";
 
 export class User extends Entity{
-    private _id: Guid;
+    private _id: string;
     private _email : string;
     private _password : string;
     private _registerDate : Date;
@@ -12,7 +12,7 @@ export class User extends Entity{
     constructor(id: Guid, email: string, password: string, registerDate: Date,
         firstName: string, lastName : string){
             super();
-            this._id = id;
+            this._id = id.toString();
             this._email = email;
             this._firstName = firstName;
             this._lastName = lastName;
@@ -26,7 +26,7 @@ export class User extends Entity{
     }
 
     public getId() : Guid{
-        return this._id;
+        return Guid.parse(this._id);
     }
 
     public getEmail() : string{

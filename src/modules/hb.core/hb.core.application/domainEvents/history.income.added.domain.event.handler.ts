@@ -1,5 +1,6 @@
 import { Inject } from "@nestjs/common";
 import { EventsHandler, IEventHandler } from "@nestjs/cqrs";
+import { Guid } from "guid-typescript";
 import { ChangeType } from "../../hb.core.domain/change.type";
 import { IncomeAddedDomainEvent } from "../../hb.core.domain/events";
 import { IHistoryService } from "../contracts/history.service.interface";
@@ -15,10 +16,9 @@ export class HistoryIncomeAddedDomainEventHandler implements IEventHandler<Incom
     constructor(@HistoryService() private service : IHistoryService){}
 
     async handle(event: IncomeAddedDomainEvent) {
-       const history = new BudgetHistoryView(event.getHistoryId(),new MoneyView(event.getChange().getValue(), event.getChange().getCurrency()),
-       ChangeType.Income.getId(), event.getReason(), event.getBudgetId(), event.getDate());
-
-       await this.service.add(history);
+        const history = await this.service.findByBalanceId(Guid.parse(event.budgetId));
+        history.applyIncome(event);
+        await this.service.update(history);
     }
 
 }

@@ -3,12 +3,11 @@ import { MoneyView } from "./money.view"
 
 export class BudgetHistoryView{
     constructor(
-    public _id : Guid,
-    public Change: MoneyView,
-    public Type : number,
-    public Reason: string,
-    public BudgetId: Guid, 
-    public OccuredOn :Date){
-        
+    public id : string,
+    public change: MoneyView,
+    public type : number,
+    public reason: string,
+    public budgetId: string, 
+    public occuredOn :Date){
     }
 }

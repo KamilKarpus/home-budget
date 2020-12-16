@@ -1,7 +1,7 @@
 export class MoneyView{
     constructor(
-        public Value: number,
-        public Currency: string
+        public value: number,
+        public currency: string
     ){
     }
 }

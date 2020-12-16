@@ -1,8 +1,9 @@
 import { Guid } from "guid-typescript";
 import { BudgetHistoryView } from "../read.models/budget.history.view";
+import { HistoryView } from "../read.models/history.view";
 
 export interface IHistoryService{
-    add(history: BudgetHistoryView): Promise<void>;
-    findManyByBalanceId(balanceId: Guid) : Promise<BudgetHistoryView[]>;
-    update(history : BudgetHistoryView) : Promise<void>;
+    add(history: HistoryView): Promise<void>;
+    findByBalanceId(balanceId: Guid) : Promise<HistoryView>;
+    update(history : HistoryView) : Promise<void>;
 }

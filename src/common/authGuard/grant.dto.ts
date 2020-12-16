@@ -1,3 +1,6 @@
+import { Document } from 'mongoose';
+import { GrantStore } from 'src/modules/hb.users/hb.users.infrastructure/services/grant.store.service';
+
 export class GrantDto{
     public Key: string;
     public SubjectId : string;
@@ -31,3 +34,7 @@ export class GrantDto{
         return this.ConsumedTime !== undefined;
     }
 }
+
+
+
+export type GrantDocument = GrantDto & Document;

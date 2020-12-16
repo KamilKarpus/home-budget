@@ -1,5 +1,6 @@
 import { Inject } from "@nestjs/common";
 import { EventsHandler, IEventHandler } from "@nestjs/cqrs";
+import { Guid } from "guid-typescript";
 import { ExpenditureAddedDomainEvent, IncomeAddedDomainEvent } from "../../hb.core.domain/events";
 import { IBudgetShortViewService } from "../contracts/budget.short.view.interface";
 
@@ -12,11 +13,9 @@ export class ExpenditureAddedDomainEventHandler implements IEventHandler<Expendi
     constructor(@ShortViewService() private readonly service : IBudgetShortViewService){}
 
     async handle(event: ExpenditureAddedDomainEvent) {
-        const view = await this.service.loadById(event.getBudgetId());
+        const view = await this.service.loadById(Guid.parse(event.budgetId));
         if(view){
-            view.TotalExpenditure = event.getTotalExpenditure().getValue();
-            view.Currency = event.getTotalExpenditure().getCurrency();
-            view.Total = event.getTotal().getValue();
+            view.applyExpenditure(event);
             await this.service.update(view);
         }
 

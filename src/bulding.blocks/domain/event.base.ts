@@ -2,18 +2,14 @@ import { Guid } from "guid-typescript";
 import { stringify } from "querystring";
 
 export class DomainEventBase{
-    private _id : Guid;
-    private _occuredDate: Date;
+    public id : string;
+    public occuredDate: Date;
+    public type : string;
 
-    constructor(){
-        this._id = Guid.create();
-        this._occuredDate = new Date();
+    constructor(type : string){
+        this.id = Guid.create().toString();
+        this.occuredDate = new Date();
+        this.type = type;
     }
 
-    public getId() : Guid{
-        return this._id;
-    }
-    public getDate() : Date{
-        return this._occuredDate;
-    }
 }

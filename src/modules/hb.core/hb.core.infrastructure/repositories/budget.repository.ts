@@ -1,44 +1,32 @@
 import { Inject } from "@nestjs/common";
-import { Model } from 'mongoose';
 import { Budget } from "../../hb.core.domain";
-import { EventPublisher } from '@nestjs/cqrs';
+import { EventBus } from '@nestjs/cqrs';
 import { Guid } from "guid-typescript";
-;
 import { IBudgetRepository } from "../../hb.core.domain/repositories/budget.repository.interface";
-import { BudgetMapper } from "../documents/budget/budget.mapper";
+import { EventStore } from "src/bulding.blocks/infrastructure/event.store";
+
 
 export class BudgetRepository implements IBudgetRepository
 {
-
-    private _mapper : BudgetMapper;
-    constructor(@Inject('BUDGET_MODEL')
-        private budgetModel : Model<Budget>,
-        private publisher : EventPublisher){
-            this._mapper = new BudgetMapper();
+    constructor(@Inject("EventStore")
+    private _eventStore : EventStore,
+    private eventBus : EventBus){
     }
 
-    async create(budgetToAdd : Budget): Promise<Budget>{
-        const document = new this.budgetModel(budgetToAdd);
-
-        const events = this.publisher.mergeObjectContext(
-            budgetToAdd
-        );
-        events.commit();
-
-        return document.save();
+    async create(budget : Budget): Promise<void>{
+        const events = budget.getDomainEvents();
+        await this._eventStore.commitAsync(Guid.parse(budget["_id"]), budget.getVersion(), events);
+        this.eventBus.publishAll(events);
     }
 
     async update(budget : Budget){
-        await this.budgetModel.updateOne({_id: budget.getId()}, budget);
-
-        const events = this.publisher.mergeObjectContext(
-            budget
-        );
-        events.commit();
+        const events = budget.getDomainEvents();
+        await this._eventStore.commitAsync(Guid.parse(budget["_id"]), budget.getVersion(), events);
+        this.eventBus.publishAll(events);
     }
 
     async findById(id: Guid) : Promise<Budget>{
-        const doc = await this.budgetModel.findById(id.toString()).lean();
-        return this._mapper.toEntity(doc);
+        const events = await this._eventStore.loadAsync(id);
+        return Budget.load(events);
     }
 }

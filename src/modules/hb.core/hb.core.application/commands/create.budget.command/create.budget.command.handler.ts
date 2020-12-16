@@ -16,7 +16,7 @@ export class CreateBudgetCommandHandler implements ICommandHandler<CreateBudgetC
         command.Currency);
         await this.repository.create(budget);
 
-        return budget.getId();
+        return budget.getAggregateId();
     }
 
 }

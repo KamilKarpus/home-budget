@@ -22,7 +22,7 @@ import { BudgetShortViewService } from './services/budget.short.view.service';
     PassportModule
   ],
   providers: [
-    BudgetRepositoryProvider, 
+    ...BudgetRepositoryProvider, 
     BudgetShortViewService,
     ...budgetProviders,
     ...EventHandlers,

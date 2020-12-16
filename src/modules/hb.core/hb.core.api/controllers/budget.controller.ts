@@ -13,8 +13,8 @@ import { ApiBearerAuth } from "@nestjs/swagger";
 import { HbRequest } from "src/common/authGuard/user.request";
 
 
-@UseGuards(JwtAuthGuard)
-@ApiBearerAuth()
+// @UseGuards(JwtAuthGuard)
+// @ApiBearerAuth()
 @Controller('budgets')
 export class BudgetController{
     constructor(private commandBus: CommandBus){
@@ -25,7 +25,7 @@ export class BudgetController{
     async create(@Body() addBudgetDto : AddBudgetDto, @Req() request : HbRequest){
         
         const id = await this.commandBus.execute(new CreateBudgetCommand(addBudgetDto.name,
-            request.user.userId, addBudgetDto.currency));
+            Guid.create().toString(), addBudgetDto.currency));
         return new Created(id.value); 
     }
 

@@ -1,8 +1,8 @@
 import * as mongoose from 'mongoose';
 
 export const MoneySchema = new mongoose.Schema({
-    _value : Number,
-    _currency: String,
+    value : Number,
+    currency: String,
 }, {_id: false});
 
 export const HistorySchema = new mongoose.Schema({
@@ -14,13 +14,12 @@ export const HistorySchema = new mongoose.Schema({
 
 });
 
-export const BudgetSchema = new mongoose.Schema({
-    _id:  String,
-    _totalExpenditure : MoneySchema,
-    _totalIncome : MoneySchema,
-    _history: [HistorySchema],
-    _name: String,
-    _total: MoneySchema,
-    _userId : String,
-    _currency : String
+export const BudgetCreatedEventSchema = new mongoose.Schema({
+     id: String,
+     balanceName : String,
+     userId : String,
+     currency : String,
+     budgetId : String,
+     occuredDate: Date,
+     type: String
 })
