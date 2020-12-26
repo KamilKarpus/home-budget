@@ -34,7 +34,7 @@ export class AuthService implements IAuthService{
 
     public generateCredential(user : UserDto) : TokenDto{
         const payload = {
-            login: user.Email, sub: user.Id, firstName: user.FirstName, lastName : user.LastName 
+            login: user.Email,  sub: user.Id.toString(), firstName: user.FirstName, lastName : user.LastName 
         }
 
         const refreshToken = uid(18);

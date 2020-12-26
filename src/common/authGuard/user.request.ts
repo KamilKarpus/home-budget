@@ -1,3 +1,5 @@
+import { User } from "./user";
+
 export class HbRequest{
-    user : { userId: string, login: string}
+    user : User
 }
