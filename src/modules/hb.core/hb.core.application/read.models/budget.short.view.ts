@@ -20,6 +20,7 @@ export class BudgetShortView{
         this.totalExpenditure = 0;
         this.totalIncome = 0;
         this.totalExpenditure = 0;
+        this.total = 0;
     }
 
     public applyIncome(event : IncomeAddedDomainEvent){
