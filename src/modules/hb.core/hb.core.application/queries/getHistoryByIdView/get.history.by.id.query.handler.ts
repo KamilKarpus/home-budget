@@ -10,6 +10,7 @@ export class GetHistoryByIdQueryHandler implements IQueryHandler<GetHistoryByIdQ
   constructor(@HistoryService() private readonly service: IHistoryService ) {}
 
   async execute(query: GetHistoryByIdQuery) {
-    return this.service.findByBalanceId(query.Id);
+    const balanceHistory = await this.service.findByBalanceId(query.Id);
+    return balanceHistory.toPagination(query.pageNumber, query.pageSize);
   }
 }

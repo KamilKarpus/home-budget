@@ -10,6 +10,7 @@ import { GetHistoryByIdQuery } from "../../hb.core.application/queries/getHistor
 import { BudgetShortView } from "../../hb.core.application/read.models/budget.short.view";
 import { HistoryView } from "../../hb.core.application/read.models/history.view";
 import { BudgetQuery } from "../dtos/budget.query";
+import { HistoryQuery } from "../dtos/history.query";
 
 
 @UseGuards(JwtAuthGuard)
@@ -35,8 +36,8 @@ export class BudgetQueryController{
       }
 
       @Get(":id/history")
-      async findHistoryById(@Param('id') id: string) : Promise<HistoryView>{
-          const result = await this.queryBus.execute(new GetHistoryByIdQuery(Guid.parse(id)));
+      async findHistoryById(@Param('id') id: string, @Query()query : HistoryQuery) : Promise<HistoryView>{
+          const result = await this.queryBus.execute(new GetHistoryByIdQuery(Guid.parse(id), query.pageNumber, query.pageSize));
           return result;
       }
 }

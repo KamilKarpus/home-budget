@@ -1,3 +1,4 @@
+import { Pagination } from "src/bulding.blocks/application/paggination/pagination";
 import { ChangeType } from "../../hb.core.domain/change.type";
 import { BalanceCreatedDomainEvent, ExpenditureAddedDomainEvent, IncomeAddedDomainEvent } from "../../hb.core.domain/events";
 import { BudgetHistoryView } from "./budget.history.view";
@@ -53,5 +54,13 @@ export class HistoryView{
             occuredOn : event.occuredDate
         };
         this.history.push(historyView);
+    }
+
+    public toPagination(pageNumber : number,  pageSize : number) : Pagination<BudgetHistoryView>{
+        var firstItem = pageSize * (pageNumber-1);
+        var items = this.history.slice(firstItem, firstItem + pageSize);
+        return new Pagination<BudgetHistoryView>(items, items.length, pageNumber, pageSize, 5);
+
+
     }
 }

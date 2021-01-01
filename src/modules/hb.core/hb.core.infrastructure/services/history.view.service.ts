@@ -16,7 +16,11 @@ export class HistoryService implements IHistoryService{
         await this.model.insertMany(history);
     }
     async findByBalanceId(balanceId: Guid): Promise<HistoryView> {
-        return await this.model.findOne({id: balanceId.toString()}); 
+        const model = await this.model.findOne({id: balanceId.toString()}); 
+        var balance = new HistoryView();
+        balance.id = model.id;
+        balance.history = model.history;
+        return balance;
     }
     async update(history: HistoryView): Promise<void> {
         await this.model.update(history, {id: history.id});
