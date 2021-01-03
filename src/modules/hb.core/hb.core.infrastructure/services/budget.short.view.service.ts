@@ -18,7 +18,8 @@ export class BudgetShortViewService implements IBudgetShortViewService{
     }
 
     async loadById(id: Guid) : Promise<BudgetShortView>{ 
-        return await this.model.findOne({id : id.toString()});
+        const result = await this.model.findOne({id : id.toString()});
+        return this.toSolidView(result);
     }
 
     async update(budget : BudgetShortView){
@@ -31,5 +32,17 @@ export class BudgetShortViewService implements IBudgetShortViewService{
 
     async getCount(userId: Guid) : Promise<number>{
         return await this.model.find({ userId :userId.toString()}).countDocuments();
+    }
+
+    private toSolidView(budget : BudgetShortView) : BudgetShortView{
+        const solidBudget = new BudgetShortView();
+        solidBudget.id = budget.id;
+        solidBudget.name = budget.name;
+        solidBudget.total = budget.total;
+        solidBudget.totalExpenditure = budget.totalExpenditure;
+        solidBudget.totalIncome = budget.totalIncome;
+        solidBudget.userId = budget.userId;
+        solidBudget.currency = budget.currency;
+        return solidBudget;
     }
 }

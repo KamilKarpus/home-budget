@@ -23,7 +23,7 @@ export class HistoryService implements IHistoryService{
         return balance;
     }
     async update(history: HistoryView): Promise<void> {
-        await this.model.update(history, {id: history.id});
+        await this.model.updateOne({id: history.id},history);
     }
 
 

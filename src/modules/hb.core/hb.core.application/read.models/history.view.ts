@@ -33,7 +33,7 @@ export class HistoryView{
                 currency: event.change.getCurrency(),
                 value: event.change.getValue()
             },
-            type : ChangeType.Created.getId(),
+            type : ChangeType.Income.getId(),
             reason: event.reason,
             budgetId: event.budgetId, 
             occuredOn : event.occuredDate
@@ -48,7 +48,7 @@ export class HistoryView{
                 currency: event.change.getCurrency(),
                 value: event.change.getValue()
             },
-            type : ChangeType.Created.getId(),
+            type : ChangeType.Expenditure.getId(),
             reason: event.reason,
             budgetId: event.budgetId, 
             occuredOn : event.occuredDate
