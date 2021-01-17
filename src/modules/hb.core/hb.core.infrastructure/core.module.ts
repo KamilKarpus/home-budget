@@ -13,6 +13,7 @@ import { DatabaseModule } from './configuration/database.module';
 import { budgetProviders } from './providers/budget.provider';
 import { BudgetRepositoryProvider } from './providers/budget.repository.provider';
 import { ServicesProviders } from './providers/services.provider';
+import { StorageProvider } from './providers/storage.provider';
 import { BudgetShortViewService } from './services/budget.short.view.service';
 
 @Module({
@@ -29,6 +30,7 @@ import { BudgetShortViewService } from './services/budget.short.view.service';
     ...CommandHandlers,
     ...QueryHandlers,
     ...ServicesProviders,
+    ...StorageProvider,
     JwtStrategy
   ],
   controllers: [BudgetController,BudgetQueryController, CurrenciesQueryController]

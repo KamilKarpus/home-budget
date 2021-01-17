@@ -50,7 +50,7 @@ export class Budget extends EventSourcedAggregate{
         this.addDomainEvent(event);
     }
 
-    public addExpenditure(amount : number, comment : string) : void{
+    public addExpenditure(amount : number, comment : string) : string{
         let money = new Money(amount, this._currency);
 
         this._totalExpenditure = this._totalExpenditure.add(money);
@@ -61,6 +61,8 @@ export class Budget extends EventSourcedAggregate{
             this._total);
 
         this.addDomainEvent(event);
+
+        return event.id;
     }
     
     public applyEventCreate(budget : Budget, event : BalanceCreatedDomainEvent){

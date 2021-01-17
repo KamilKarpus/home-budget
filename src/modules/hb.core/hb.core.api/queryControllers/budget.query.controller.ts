@@ -32,6 +32,7 @@ export class BudgetQueryController{
       @Get(":id")
       async findById(@Param('id') id: string) : Promise<BudgetShortView>{
           const result = await this.queryBus.execute(new GetByIdBudgetViewQuery(Guid.parse(id)));
+          console.log(result);
           return result;
       }
 

@@ -2,7 +2,8 @@ import { Connection } from 'mongoose';
 import { EventStoreSchema } from 'src/bulding.blocks/infrastructure/schemas/event.store.schema';
 import { BudgetShortViewSchema } from '../documents/budget.readmodel/budget.view.schema';
 import { HistoryBudgetSchema, HistoryViewSchema } from '../documents/budget.readmodel/history.view.schema';
-import { BudgetCreatedEventSchema } from '../documents/budget/budget.schema';
+import { ReceiptViewModelSchema } from '../documents/budget.readmodel/receipt.view.schema';
+
 
 export const budgetProviders = [
     {
@@ -21,5 +22,10 @@ export const budgetProviders = [
       useFactory: (connection: Connection) => connection.model('HistoryShortView', HistoryViewSchema),
       inject: ['DATABASE_CONNECTION'],
     },
+    {
+      provide: 'RECEIPT_VIEW',
+      useFactory: (connection : Connection) => connection.model('ReceiptHViewModel', ReceiptViewModelSchema),
+      inject: ['DATABASE_CONNECTION'],
+    }
   ];
   

@@ -1,4 +1,4 @@
-import { Body, Controller, Param, Post, Put, Req, UseGuards } from "@nestjs/common";
+import { Body, Controller, Param, Post, Put, Req, UploadedFiles, UseGuards, UseInterceptors } from "@nestjs/common";
 import { CommandBus } from "@nestjs/cqrs";
 import { Guid } from "guid-typescript";
 import { AddIncomeCommand } from "../../hb.core.application/commands/add.income.command/add.income.command";
@@ -9,8 +9,9 @@ import { AddExpenditureCommand } from "../../hb.core.application/commands/add.ex
 import { ExpenditureDto } from "../dtos/budget.expenditure.dto";
 import { Created } from "src/common/responses/created";
 import { JwtAuthGuard } from "src/common/authGuard/auth.guard";
-import { ApiBearerAuth } from "@nestjs/swagger";
+import { ApiBearerAuth, ApiConsumes } from "@nestjs/swagger";
 import { HbRequest } from "src/common/authGuard/user.request";
+import { FilesInterceptor } from "@nestjs/platform-express";
 
 
 @UseGuards(JwtAuthGuard)
@@ -36,9 +37,13 @@ export class BudgetController{
     }
 
     @Put(":id/expenditure")
-    async updateExpenditure(@Param('id') id: string, @Body() expenditure : ExpenditureDto){
+    @UseInterceptors(FilesInterceptor('files'))
+    @ApiConsumes('multipart/form-data')
+    async updateExpenditure(@UploadedFiles() files,@Param('id') id: string, @Body() expenditure : ExpenditureDto){
+        console.log(files);
+        console.log(expenditure.Expenditure);
         await this.commandBus.execute(new AddExpenditureCommand(Guid.parse(id),
-            expenditure.Expenditure, expenditure.Reason));
+            expenditure.Expenditure, expenditure.Reason, files));
     }
 
 }
