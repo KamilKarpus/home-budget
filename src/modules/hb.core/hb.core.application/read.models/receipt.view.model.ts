@@ -11,6 +11,10 @@ export class ReceiptViewModel{
 
     }
 
+    public addUrl(url : string) : void{
+        this.fileUrls.push(url);
+    }
+
     public static create(budgetId : string, transactionId : string) : ReceiptViewModel{
         var viewModel = new this();
         viewModel.id = Guid.create().toString();

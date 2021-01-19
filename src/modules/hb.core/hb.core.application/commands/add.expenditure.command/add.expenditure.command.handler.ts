@@ -19,7 +19,6 @@ export class AddExpenditureCommandHandler implements ICommandHandler<AddExpendit
 
     async execute(command: AddExpenditureCommand): Promise<any> {
 
-       console.log(this.fileStorage);
        const budget = await this.repository.findById(command.Id);
        const trascationId = budget.addExpenditure(command.Expenditure,
             command.Reason);
@@ -31,7 +30,7 @@ export class AddExpenditureCommandHandler implements ICommandHandler<AddExpendit
             for(let i =0; i<files.length;i++){
                 var fileExt = files[i].originalname.split('.').pop();
                 const fileName = `${trascationId}_${i}.${fileExt}`;
-                viewModel.fileUrls.push(await this.fileStorage.uploadFile(files[i], fileName));
+                viewModel.addUrl(await this.fileStorage.uploadFile(files[i], fileName));
             }
         }
         await this.modelViewService.add(viewModel);

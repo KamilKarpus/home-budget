@@ -12,6 +12,7 @@ import { JwtAuthGuard } from "src/common/authGuard/auth.guard";
 import { ApiBearerAuth, ApiConsumes } from "@nestjs/swagger";
 import { HbRequest } from "src/common/authGuard/user.request";
 import { FilesInterceptor } from "@nestjs/platform-express";
+import { ApiFile } from "src/bulding.blocks/application/docs/apiFile";
 
 
 @UseGuards(JwtAuthGuard)
@@ -38,10 +39,9 @@ export class BudgetController{
 
     @Put(":id/expenditure")
     @UseInterceptors(FilesInterceptor('files'))
+    @ApiFile('files')
     @ApiConsumes('multipart/form-data')
     async updateExpenditure(@UploadedFiles() files,@Param('id') id: string, @Body() expenditure : ExpenditureDto){
-        console.log(files);
-        console.log(expenditure.Expenditure);
         await this.commandBus.execute(new AddExpenditureCommand(Guid.parse(id),
             expenditure.Expenditure, expenditure.Reason, files));
     }
