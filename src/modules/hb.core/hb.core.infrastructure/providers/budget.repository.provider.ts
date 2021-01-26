@@ -1,6 +1,6 @@
-import { Provider } from "@nestjs/common";
 import { BudgetRepository } from "../repositories/budget.repository";
 import { EventStore } from "../../../../bulding.blocks/infrastructure/event.store";
+import { FixedIncomeRepository } from "../repositories/fixed-income-repository";
 
 
 export const BudgetRepositoryProvider = [{
@@ -9,4 +9,7 @@ export const BudgetRepositoryProvider = [{
 },{
     provide: 'EventStore',
     useClass: EventStore
+},{
+    provide: 'FixedIncomeRepository',
+    useClass : FixedIncomeRepository
 }]
